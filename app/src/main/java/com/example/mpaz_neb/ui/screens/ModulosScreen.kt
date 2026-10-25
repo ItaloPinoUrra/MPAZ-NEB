@@ -2,52 +2,47 @@ package com.example.mpaz_neb.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.mpaz_neb.ui.components.MpazBottomBar
 import com.example.mpaz_neb.viewmodels.MainViewModel
+import kotlinx.coroutines.launch // <-- NUEVO IMPORT
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModulosScreen(
     viewModel: MainViewModel,
     navController: NavController
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            // ESTO ES EL NAVIGATION BAR (la barra de abajo)
-            NavigationBar {
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
+        topBar = {
+            TopAppBar(
+                title = { Text("Módulos") },
+                navigationIcon = {
+                    IconButton(onClick = {
                         navController.navigate("inicio") {
                             popUpTo("inicio") { inclusive = true }
                         }
-                    },
-                    icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio") }
-                )
-                NavigationBarItem(
-                    selected = true,
-                    onClick = { }, // Ya estamos aquí
-                    icon = { Icon(Icons.Filled.List, contentDescription = "Módulos") },
-                    label = { Text("Módulos") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        navController.navigate("perfil")
-                    },
-                    icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
-                    label = { Text("Perfil") }
-                )
-            }
+                    }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            )
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        bottomBar = {
+            MpazBottomBar(navController, rutaActual = "modulos")
         }
     ) { innerPadding ->
         Column(
@@ -63,11 +58,31 @@ fun ModulosScreen(
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+
+            //LECTURA
+            Button(
+                onClick = {
+                    // 3. Mostramos el mensaje cuando hacen clic
+                    scope.launch {
+                        snackbarHostState.showSnackbar("El Módulo de Lectura estará disponible próximamente.")
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Módulo de Lectura")
             }
+
             Spacer(modifier = Modifier.height(12.dp))
-            Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+
+            //MATEMÁTICA
+            Button(
+                onClick = {
+                    scope.launch {
+                        snackbarHostState.showSnackbar("El Módulo de Matemática estará disponible próximamente.")
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Módulo de Matemática")
             }
         }

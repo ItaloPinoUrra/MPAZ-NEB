@@ -26,7 +26,7 @@ fun AppNavigation() {
             ModulosScreen(mainViewModel, navController)
         }
         composable(route = "perfil") {
-            PerfilScreen(mainViewModel, navController)
+            PerfilScreen(mainViewModel, usuarioViewModel, navController)
         }
 
 
