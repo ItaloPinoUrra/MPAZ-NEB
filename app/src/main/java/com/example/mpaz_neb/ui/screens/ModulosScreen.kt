@@ -2,53 +2,33 @@ package com.example.mpaz_neb.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.mpaz_neb.viewmodels.MainViewModel
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModulosScreen(
-    viewModel: MainViewModel,
-    navController: NavController
-) {
+fun ModulosScreen(navController: NavController) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            // ESTO ES EL NAVIGATION BAR (la barra de abajo)
-            NavigationBar {
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        navController.navigate("inicio") {
-                            popUpTo("inicio") { inclusive = true }
-                        }
-                    },
-                    icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio") }
-                )
-                NavigationBarItem(
-                    selected = true,
-                    onClick = { }, // Ya estamos aquí
-                    icon = { Icon(Icons.Filled.List, contentDescription = "Módulos") },
-                    label = { Text("Módulos") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        navController.navigate("perfil")
-                    },
-                    icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
-                    label = { Text("Perfil") }
-                )
-            }
-        }
+        topBar = {
+            TopAppBar(
+                title = { Text("Módulos") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver")
+                    }
+                }
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -58,18 +38,21 @@ fun ModulosScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Módulos disponibles",
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
-                Text("Módulo de Lectura")
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
-                Text("Módulo de Matemática")
-            }
+            Text("Módulos disponibles", style = MaterialTheme.typography.headlineMedium)
+            Spacer(Modifier.height(24.dp))
+            Button(
+                onClick = {
+                    scope.launch { snackbarHostState.showSnackbar("Módulo de Lectura próximamente.") }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Módulo de Lectura") }
+            Spacer(Modifier.height(12.dp))
+            Button(
+                onClick = {
+                    scope.launch { snackbarHostState.showSnackbar("Módulo de Matemática próximamente.") }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Módulo de Matemática") }
         }
     }
 }

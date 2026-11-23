@@ -5,8 +5,9 @@ data class UsuarioUiState(
     val nombre: String = "",
     val correo: String = "",
     val clave: String = "",
-    val direccion: String = "",
+    val rol: String = "Alumno",
     val aceptaTerminos: Boolean = false,
+    val imagenUri: String? = null,
     val errores: UsuarioErrores = UsuarioErrores()
 )
 

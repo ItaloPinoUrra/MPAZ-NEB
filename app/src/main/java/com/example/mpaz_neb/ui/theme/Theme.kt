@@ -12,29 +12,34 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = MpazColorPrincipal,
-    ONpRIMARY
+    onPrimary = MpazColorLetra,
+    secondary = MpazColorAmarillo,
+    onSecondary = MpazColorLetra,
+    background = MpazColorFondoOscuro,
+    onBackground = MpazColorTextoClaro,
+    surface = MpazColorSuperficieOscura,
+    onSurface = MpazColorTextoClaro,
+    error = MpazColorLetra
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = MpazColorPrincipal,
+    onPrimary = MpazColorBlanco,
+    secondary = MpazColorAmarillo,
+    onSecondary = MpazColorLetra,
+    background = MpazColorFondo,
+    onBackground = MpazColorLetra,
+    surface = MpazColorBlanco,
+    onSurface = MpazColorLetra,
+    surfaceVariant = MpazColorFondoSecundario,
+    onSurfaceVariant = MpazColorTextoSecundario,
+    outline = MpazColorBorde,
+    error = MpazColorLetra
 )
 
 @Composable
 fun MPAZNEBTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -43,7 +48,6 @@ fun MPAZNEBTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
